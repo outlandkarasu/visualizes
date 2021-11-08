@@ -8,5 +8,9 @@
 	},
 	"description": "Some visualize applications.",
 	"license": "BSL-1.0",
-	"name": "visualizes"
+	"name": "visualizes",
+	"versions": [
+		"SDL_2014",
+		"SDL_Image_205"
+	]
 }
