@@ -2,17 +2,15 @@
 Application entry point module.
 */
 
-import std.exception : enforce;
+import std.exception :
+    enforce;
 import std.stdio :
-    stderr,
     writefln;
 import std.string :
-    format,
-    fromStringz;
+    format;
 
 import bindbc.sdl :
     loadSDL,
-    SDL_GetError,
     SDL_INIT_VIDEO,
     SDL_Init,
     SDL_Quit,
@@ -26,10 +24,8 @@ import bindbc.sdl.image :
     sdlImageSupport,
     unloadSDLImage;
 
-string sdlError() nothrow
-{
-    return SDL_GetError().fromStringz.idup;
-}
+import visualizes.sdl : sdlError;
+import visualizes.collatz : drawCollatz;
 
 /**
 Application entry point.
@@ -56,6 +52,8 @@ int main()
     scope(exit) IMG_Quit();
 
     writefln("init SDL_Image");
+
+    drawCollatz(640, 480, "test.png");
 
     return 0;
 }
