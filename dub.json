@@ -1,0 +1,12 @@
+{
+	"authors": [
+		"outland.karasu@gmail.com"
+	],
+	"copyright": "Copyright © 2021, outland.karasu@gmail.com",
+	"dependencies": {
+		"bindbc-sdl": "~>1.0.1"
+	},
+	"description": "Some visualize applications.",
+	"license": "BSL-1.0",
+	"name": "visualizes"
+}

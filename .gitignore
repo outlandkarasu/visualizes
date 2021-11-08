@@ -1,0 +1,15 @@
+.dub
+docs.json
+__dummy.html
+docs/
+/visualizes
+visualizes.so
+visualizes.dylib
+visualizes.dll
+visualizes.a
+visualizes.lib
+visualizes-test-*
+*.exe
+*.o
+*.obj
+*.lst
