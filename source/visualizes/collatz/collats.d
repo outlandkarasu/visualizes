@@ -15,7 +15,7 @@ struct Collatz
 {
     this(scope const(char)[] bits) nothrow pure scope
     {
-        foreach (b; bits)
+        foreach_reverse (b; bits)
         {
             buffer1_ ~= b == '1';
         }
@@ -24,7 +24,7 @@ struct Collatz
     ///
     nothrow pure unittest
     {
-        auto collatz = Collatz("0001");
+        auto collatz = Collatz("1000");
         assert(collatz[] == [false, false, false, true]);
     }
 
