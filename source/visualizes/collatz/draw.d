@@ -6,7 +6,7 @@ module visualizes.collatz.draw;
 import std.exception :
     enforce;
 import std.string : toStringz;
-import std.range : take;
+import std.range : take, repeat, array;
 
 import bindbc.sdl :
     IMG_SavePNG,
@@ -38,12 +38,12 @@ void drawCollatz(uint width, uint height, scope const(char)[] path)
     auto renderer = enforce(SDL_CreateSoftwareRenderer(surface), sdlError);
     scope(exit) SDL_DestroyRenderer(renderer);
 
-    enforce(SDL_SetRenderDrawColor(renderer, 0, 0, 0, 0) == 0, sdlError);
+    enforce(SDL_SetRenderDrawColor(renderer, 144, 170, 203, 255) == 0, sdlError);
     enforce(SDL_RenderClear(renderer) == 0, sdlError);
 
-    enforce(SDL_SetRenderDrawColor(renderer, 255, 0, 0, 255) == 0, sdlError);
+    enforce(SDL_SetRenderDrawColor(renderer, 243, 241, 245, 255) == 0, sdlError);
 
-    auto collatz = Collatz("11011");
+    auto collatz = Collatz('1'.repeat(2300).array);
     foreach (y; 0 .. height)
     {
         foreach (n, b; collatz[].take(width))

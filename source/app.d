@@ -53,7 +53,7 @@ int main()
 
     writefln("init SDL_Image");
 
-    drawCollatz(640, 480, "test.png");
+    drawCollatz(4567, 5937, "test.png");
 
     return 0;
 }
