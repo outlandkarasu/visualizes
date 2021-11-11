@@ -15,7 +15,7 @@ struct Collatz
 {
     this(scope const(char)[] bits) nothrow pure scope
     {
-        foreach (b; bits)
+        foreach_reverse (b; bits)
         {
             buffer1_ ~= b == '1';
         }
@@ -24,7 +24,7 @@ struct Collatz
     ///
     nothrow pure unittest
     {
-        auto collatz = Collatz("0001");
+        auto collatz = Collatz("1000");
         assert(collatz[] == [false, false, false, true]);
     }
 
@@ -52,7 +52,7 @@ struct Collatz
             uint count = b ? 1 : 0;
             if (carry) { ++count; }
             if (i < (currentBuffer[].length - 1) && currentBuffer[][i + 1]) { ++count; }
-            nextBuffer ~= (count != 2);
+            nextBuffer ~= (count == 1 || count == 3);
             carry = count >= 2;
         }
 
@@ -105,6 +105,17 @@ struct Collatz
         assert(collatz[] == [false, true, true, true, false, true]);
         collatz.next();
         assert(collatz[] == [true, true, true, false, true]);
+    }
+
+    ///
+    pure unittest
+    {
+        auto collatz = Collatz("101001");
+        assert(collatz[] == [true, false, false, true, false, true]);
+        collatz.next();
+        assert(collatz[] == [false, false, true, true, true, true, true]);
+        collatz.next();
+        assert(collatz[] == [false, true, true, true, true, true]);
     }
 
     inout(bool)[] opSlice() @nogc nothrow pure scope inout
