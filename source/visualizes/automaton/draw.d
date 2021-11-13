@@ -39,10 +39,10 @@ void drawAutomaton(uint width, uint height, scope const(char)[] path)
     auto renderer = enforce(SDL_CreateSoftwareRenderer(surface), sdlError);
     scope(exit) SDL_DestroyRenderer(renderer);
 
-    enforce(SDL_SetRenderDrawColor(renderer, 0, 0, 0, 0) == 0, sdlError);
+    enforce(SDL_SetRenderDrawColor(renderer, 0xFE, 0xF5, 0xED, 255) == 0, sdlError);
     enforce(SDL_RenderClear(renderer) == 0, sdlError);
 
-    enforce(SDL_SetRenderDrawColor(renderer, 243, 241, 245, 255) == 0, sdlError);
+    enforce(SDL_SetRenderDrawColor(renderer, 0x87, 0xAA, 0xAA, 255) == 0, sdlError);
 
     auto automaton = Automaton(30);
     immutable bitsCount = 10000;
@@ -55,7 +55,7 @@ void drawAutomaton(uint width, uint height, scope const(char)[] path)
     bits[center] = 1;
     immutable left = max(0, center - width / 2);
     immutable right = left + width;
-    immutable offset = height / 3;
+    immutable offset = height / 4;
 
     foreach (y; offset .. height)
     {
