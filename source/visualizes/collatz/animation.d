@@ -9,23 +9,22 @@ import std.string : toStringz;
 import std.range : take, repeat, array;
 
 import bindbc.sdl :
-    SDL_CreateWindowAndRenderer,
-    SDL_DestroyRenderer,
+    SDL_CreateWindow,
+    SDL_CreateRGBSurface,
+    SDL_BlitSurface,
     SDL_DestroyWindow,
+    SDL_GetWindowSurface,
     SDL_FreeSurface,
-    SDL_RenderClear,
-    SDL_RenderDrawPoint,
-    SDL_RenderPresent,
-    SDL_SetRenderDrawColor,
+    SDL_UpdateWindowSurface,
     SDL_WINDOW_SHOWN,
     SDL_Window,
-    SDL_Renderer,
     SDL_Delay,
     SDL_GetPerformanceFrequency,
     SDL_GetPerformanceCounter,
     SDL_Event,
     SDL_PollEvent,
-    SDL_QUIT;
+    SDL_QUIT,
+    SDL_WINDOWPOS_UNDEFINED;
 
 import visualizes.sdl : sdlError;
 import visualizes.collatz.collatz : Collatz;
@@ -41,20 +40,14 @@ Params:
 */
 void animateCollatz(uint width, uint height)
 {
-    SDL_Window* window;
-    SDL_Renderer* renderer;
-    enforce(SDL_CreateWindowAndRenderer(width, height, SDL_WINDOW_SHOWN, &window, &renderer) == 0, sdlError);
-    scope(exit)
-    {
-        SDL_DestroyRenderer(renderer);
-        SDL_DestroyWindow(window);
-    }
+    auto window = enforce(SDL_CreateWindow("Collatz", SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED, width, height, SDL_WINDOW_SHOWN), sdlError);
+    scope(exit) SDL_DestroyWindow(window);
+    auto windowSurface = enforce(SDL_GetWindowSurface(window), sdlError);
 
-    enforce(SDL_SetRenderDrawColor(renderer, 144, 170, 203, 255) == 0, sdlError);
-    enforce(SDL_RenderClear(renderer) == 0, sdlError);
-    enforce(SDL_SetRenderDrawColor(renderer, 243, 241, 245, 255) == 0, sdlError);
+    auto surface = enforce(SDL_CreateRGBSurface(0, width, height, 32, 0, 0, 0, 0), sdlError);
+    scope(exit) SDL_FreeSurface(surface);
 
-    auto collatz = Collatz('1'.repeat(100).array);
+    auto collatz = Collatz('1'.repeat(200).array);
 
     immutable performanceFrequency = SDL_GetPerformanceFrequency();
     immutable countPerFrame = performanceFrequency / FPS;
@@ -73,11 +66,13 @@ void animateCollatz(uint width, uint height)
         {
             if (b && x < width)
             {
-                enforce(SDL_RenderDrawPoint(renderer, x, cast(uint)(height - n - 1)) == 0, sdlError);
+                auto pixels = (cast(uint*)surface.pixels)[0 .. width * height];
+                pixels[width * (height - n - 1) + x] = 0x00FF0000;
             }
         }
 
-        SDL_RenderPresent(renderer);
+        enforce(SDL_BlitSurface(surface, null, windowSurface, null) == 0, sdlError);
+        enforce(SDL_UpdateWindowSurface(window) == 0, sdlError);
         collatz.next();
 
         immutable drawDelay = SDL_GetPerformanceCounter() - frameStart;
