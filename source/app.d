@@ -26,6 +26,7 @@ import bindbc.sdl.image :
 
 import visualizes.sdl : sdlError;
 import visualizes.collatz : drawCollatz;
+import visualizes.automaton : drawAutomaton;
 
 /**
 Application entry point.
@@ -53,7 +54,8 @@ int main()
 
     writefln("init SDL_Image");
 
-    drawCollatz(4567, 5937, "test.png");
+    //drawCollatz(4567, 5937, "test.png");
+    drawAutomaton(4567, 5937, "test.png");
 
     return 0;
 }
