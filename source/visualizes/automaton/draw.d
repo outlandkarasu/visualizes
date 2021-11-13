@@ -3,7 +3,7 @@ Automaton draw module.
 */
 module visualizes.automaton.draw;
 
-import std.algorithm : swap;
+import std.algorithm : swap, min, max;
 import std.exception :
     enforce;
 import std.string : toStringz;
@@ -45,19 +45,24 @@ void drawAutomaton(uint width, uint height, scope const(char)[] path)
     enforce(SDL_SetRenderDrawColor(renderer, 243, 241, 245, 255) == 0, sdlError);
 
     auto automaton = Automaton(30);
-    auto bits1 = new ubyte[](width);
-    auto bits2 = new ubyte[](width);
+    immutable bitsCount = 10000;
+    auto bits1 = new ubyte[](bitsCount);
+    auto bits2 = new ubyte[](bitsCount);
     auto bits = bits1;
     auto bitsNext = bits2;
-    bits[width / 2] = 1;
+
+    immutable center = bitsCount / 2;
+    bits[center] = 1;
+    immutable left = max(0, center - width / 2);
+    immutable right = left + width;
 
     foreach (y; 0 .. height)
     {
-        foreach (n, b; bits)
+        foreach (n, b; bits[left .. right])
         {
             if (b)
             {
-                enforce(SDL_RenderDrawPoint(renderer, cast(uint)(width - 1 - n), y) == 0, sdlError);
+                enforce(SDL_RenderDrawPoint(renderer, cast(uint)n, y) == 0, sdlError);
             }
         }
 
