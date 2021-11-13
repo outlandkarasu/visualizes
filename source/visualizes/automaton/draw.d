@@ -55,8 +55,9 @@ void drawAutomaton(uint width, uint height, scope const(char)[] path)
     bits[center] = 1;
     immutable left = max(0, center - width / 2);
     immutable right = left + width;
+    immutable offset = height / 3;
 
-    foreach (y; 0 .. height)
+    foreach (y; offset .. height)
     {
         foreach (n, b; bits[left .. right])
         {
