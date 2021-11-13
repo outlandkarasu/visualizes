@@ -25,7 +25,7 @@ import bindbc.sdl.image :
     unloadSDLImage;
 
 import visualizes.sdl : sdlError;
-import visualizes.collatz : drawCollatz;
+import visualizes.collatz : drawCollatz, animateCollatz;
 import visualizes.automaton : drawAutomaton;
 
 /**
@@ -55,7 +55,8 @@ int main()
     writefln("init SDL_Image");
 
     //drawCollatz(4567, 5937, "test.png");
-    drawAutomaton(4567, 5937, "test.png");
+    animateCollatz(640, 480);
+    //drawAutomaton(4567, 5937, "test.png");
 
     return 0;
 }
